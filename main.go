@@ -5,6 +5,8 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -28,6 +30,12 @@ func duplicateRequest(jsonData []byte, url string) string {
 }
 
 func main() {
+
+	envs, exists := os.LookupEnv("ENVIRONMENTS")
+	if !exists {
+		log.Panic("You need to export env ENVIRONMENTS")
+	}
+
 	r := gin.New()
 
 	r.POST("/middleware", func(c *gin.Context) {
@@ -35,12 +43,10 @@ func main() {
 		if err != nil {
 			log.Print(err)
 		}
-		// Environment A
-		log.Print("Send to environment A")
-		log.Print(duplicateRequest(jsonData, "http://localhost:8181/testepostA"))
-		// Environment B
-		log.Print("Send to environment B")
-		log.Print(duplicateRequest(jsonData, "http://localhost:8181/testepostB"))
+		for _, envUrl := range strings.Split(envs, ";") {
+			log.Print("Send to %V", envUrl)
+			log.Print(duplicateRequest(jsonData, envUrl))
+		}
 		c.String(200, "Sented")
 	})
 
