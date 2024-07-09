@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"bytes"
@@ -29,7 +29,7 @@ func duplicateRequest(jsonData []byte, url string) string {
 	return string(body)
 }
 
-func main() {
+func Execute() {
 
 	envs, exists := os.LookupEnv("ENVIRONMENTS")
 	if !exists {
