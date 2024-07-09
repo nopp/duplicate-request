@@ -2,26 +2,29 @@ package main
 
 import (
 	"bytes"
-	"fmt"
+	"io"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-func duplicatePost(jsonData []byte, url string) {
+func duplicatePost(jsonData []byte, url string) string {
 	jsonStr := []byte(jsonData)
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
 	if err != nil {
-		panic(err)
+		log.Print(err)
 	}
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		panic(err)
+		log.Print(err)
 	}
 	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
+	return string(body)
 }
 
 func main() {
@@ -30,13 +33,16 @@ func main() {
 	r.POST("/btgmiddleware", func(c *gin.Context) {
 		jsonData, err := c.GetRawData()
 		if err != nil {
-			fmt.Println("Cannot retrieve data")
+			log.Print(err)
 		}
 		// Environment A
-		duplicatePost(jsonData, "http://localhost:8181/testepostA")
+		log.Print("Send to environment A")
+		log.Print(duplicatePost(jsonData, "http://localhost:8181/testepostA"))
 		// Environment B
-		duplicatePost(jsonData, "http://localhost:8181/testepostB")
+		log.Print("Send to environment B")
+		log.Print(duplicatePost(jsonData, "http://localhost:8181/testepostB"))
 	})
 
+	log.Print("Duplicator started")
 	r.Run(":8080")
 }
