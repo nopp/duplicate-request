@@ -41,6 +41,7 @@ func main() {
 		// Environment B
 		log.Print("Send to environment B")
 		log.Print(duplicatePost(jsonData, "http://localhost:8181/testepostB"))
+		c.String(200, "Sented")
 	})
 
 	log.Print("Duplicator started")
