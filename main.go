@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func duplicatePost(jsonData []byte, url string) string {
+func duplicateRequest(jsonData []byte, url string) string {
 	jsonStr := []byte(jsonData)
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
 	if err != nil {
@@ -37,10 +37,10 @@ func main() {
 		}
 		// Environment A
 		log.Print("Send to environment A")
-		log.Print(duplicatePost(jsonData, "http://localhost:8181/testepostA"))
+		log.Print(duplicateRequest(jsonData, "http://localhost:8181/testepostA"))
 		// Environment B
 		log.Print("Send to environment B")
-		log.Print(duplicatePost(jsonData, "http://localhost:8181/testepostB"))
+		log.Print(duplicateRequest(jsonData, "http://localhost:8181/testepostB"))
 		c.String(200, "Sented")
 	})
 
