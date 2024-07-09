@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: duplicator
+  namespace: duplicator
+  labels:
+    app: duplicator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: duplicator
+  template:
+    metadata:
+      labels:
+        app: duplicator
+    spec:
+      containers:
+      - name: duplicator
+        image: duplicator:0.0.1
+        imagePullPolicy: Always
+        env:
+        - name: ENVIRONMENTS
+          valueFrom:
+            configMapKeyRef:
+              name: duplicator
+              key: environments
