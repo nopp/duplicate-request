@@ -30,7 +30,7 @@ func duplicatePost(jsonData []byte, url string) string {
 func main() {
 	r := gin.New()
 
-	r.POST("/btgmiddleware", func(c *gin.Context) {
+	r.POST("/middleware", func(c *gin.Context) {
 		jsonData, err := c.GetRawData()
 		if err != nil {
 			log.Print(err)
