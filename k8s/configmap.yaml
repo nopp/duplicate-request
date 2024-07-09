@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: duplicator
+  namespace: duplicator
+data:
+  environments: http://localhost:8181/testepostA;http://localhost:8181/testepostB
