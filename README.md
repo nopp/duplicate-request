@@ -1,4 +1,4 @@
-# duplicatePost
+# duplicate-request
 Receive POST and duplicate this POST to others environments
 
 # Start app-test
